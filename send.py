@@ -1,6 +1,6 @@
 """Send a text message or a file to the Telegram chat.
 
-Usage: python3 send.py text FILE_WITH_TEXT
+Usage: python3 send.py text FILE_WITH_TEXT   (Telegram HTML: <b>, <i>, <a href>; escape &, <, >)
        python3 send.py file PATH [CAPTION]
 Env: TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID (comma-separated list of chats)
 """
@@ -20,7 +20,7 @@ for chat in os.environ['TELEGRAM_CHAT_ID'].split(','):
                 cur = cur + '\n\n' + p if cur else p
         parts.append(cur)
         for p in parts:
-            r = json.load(urllib.request.urlopen(api + 'sendMessage', urllib.parse.urlencode({'chat_id': chat, 'text': p}).encode(), timeout=60))
+            r = json.load(urllib.request.urlopen(api + 'sendMessage', urllib.parse.urlencode({'chat_id': chat, 'text': p, 'parse_mode': 'HTML'}).encode(), timeout=60))
             print(chat, r['ok'])
     else:
         path = sys.argv[2]
